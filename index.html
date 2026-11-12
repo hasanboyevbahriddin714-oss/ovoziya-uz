@@ -63,7 +63,7 @@
 
         <!-- Qidirish paneli -->
         <div id="searchBar" class="hidden px-4 pb-3 border-t border-slate-700/50 pt-2 bg-slate-800">
-            <input type="text" id="searchInput" placeholder="Kitob nomini qidiring..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-green-500 transition">
+            <input type="text" id="searchInput" oninput="filterBooks()" placeholder="Kitob nomini qidiring..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white focus:outline-none focus:border-green-500 transition">
         </div>
     </header>
 
@@ -82,16 +82,13 @@
                         <i class="fa-solid fa-volume-high text-xs"></i>
                     </div>
                     <div>
-                        <h4 class="text-xs font-semibold text-white">Salomlashuv Audiusi</h4>
-                        <p class="text-[10px] text-slate-400">Saodat / Bahriddin</p>
+                        <h4 class="text-xs font-semibold text-white">Muallif haqida qisqacha maʼlumot</h4>
+                        <p class="text-[10px] text-slate-400">Hasanboyev Bahriddinbek (16 yosh)</p>
                     </div>
                 </div>
                 <div class="flex items-center space-x-1.5">
-                    <button onclick="playAudio('Salomlashuv Audiusi', 'saodat-preview (3).wav')" class="bg-green-500 hover:bg-green-600 text-slate-900 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-md shadow-green-500/20">
+                    <button onclick="handleAction('Muallif haqida qisqacha maʼlumot', 'saodat-preview (3).wav')" class="bg-green-500 hover:bg-green-600 text-slate-900 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-md shadow-green-500/20">
                         Tinglash
-                    </button>
-                    <button onclick="downloadAudio('Salomlashuv Audiusi')" class="bg-slate-700 hover:bg-slate-600 text-slate-300 w-7 h-7 rounded-lg flex items-center justify-center text-xs transition">
-                        <i class="fa-solid fa-download"></i>
                     </button>
                 </div>
             </div>
@@ -146,19 +143,22 @@
         <p>&copy; 2026 Bahriddin loyihasi. Barcha huquqlar himoyalangan.<br><span class="text-slate-500">40-maktab, 10-A sinf o'quvchisi</span></p>
     </footer>
 
-    <!-- Muallif haqida modal -->
+    <!-- Muallif haqida modal (Sizning ma'lumotlaringiz bilan) -->
     <div id="aboutModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-2xl p-5 shadow-2xl max-h-[85vh] overflow-y-auto">
             <div class="flex items-center justify-between mb-3 pb-2 border-b border-slate-700">
-                <h3 class="font-bold text-sm text-green-400">1. Muallif haqida qisqacha maʼlumot</h3>
+                <h3 class="font-bold text-sm text-green-400">Muallif haqida qisqacha maʼlumot</h3>
                 <button onclick="closeAboutModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-sm"></i></button>
             </div>
             <div class="space-y-3 text-xs text-slate-300 leading-relaxed">
                 <p><strong>Ismim:</strong> Bahriddin Hasanboyev, 16 yoshdaman.</p>
                 <p>Yosh bo'lishimga qaramay, adabiyotga, kitob o'qishga va o'z fikrlarimni qogʻozga tushirishga boʻlgan qiziqishim juda baland.</p>
                 <p>Ushbu hikoyani yozishdan asosiy maqsadim shunchaki vaqt oʻtkazish emas, balki oʻquvchi qalbida qandaydir iliq tuygʻu uygʻotish va hayot haqida bir lahza boʻlsa ham oʻylantirishdir.</p>
-                <p>Tengdoshlarimga va kitobxonlarga ilhom berish, hayotdagi turli sinovlar, quvonch va tashvishlarga duch kelganda kuch topishlarida yordam berish mening eng katta yutug'im bo'ladi.</p>
-                <p class="pt-2 font-bold text-green-400">MUALLIF: HASANBOYEV BAHRIDDINBEK</p>
+                <p>Ushbu hikoyani yozishdan asosiy maqsadim tengdoshlarimga va kitobxonlarga ilhom berish, hayotda har birimiz turli sinovlar, quvonch va tashvishlarga duch kelamiz.</p>
+                <p>Oʻzim yozgan bu voqea orqali oʻquvchilar hayotiy qiyinchiliklarni yengib oʻtishda kuch topsalar va toʻgʻri xulosalar chiqarishsa bu mening eng katta yutugʻim boʻladi.</p>
+                <p>Ichki kechinmalarim va dunyoqarashimni ulashish, inson qalbiga nazar tashlash (yaxshilik va yomonlik, doʻstlik, sadoqat hamda insoniylik kabi oliy qadriyatlar) haqidagi oʻylarimni oʻz qahramonlarim taqdiri orqali ochib berishga harakat qildim.</p>
+                <p>Ijodiy olamga ilk qadamlar — bu mening ijodiy yoʻldagi dastlabki qadamlarimdan biri. Kelajakda oʻquvchilar qalbidan joy oladigan yanada katta va mazmunli asarlar yozish niyatidaman.</p>
+                <p class="pt-2 font-bold text-green-400">MUALLIF: HASANBOYEV BAHRIDDINBEK (10-A sinf)</p>
             </div>
             <div class="mt-4 pt-3 border-t border-slate-700 text-right">
                 <button onclick="closeAboutModal()" class="bg-green-500 hover:bg-green-600 text-slate-900 px-4 py-1.5 rounded-lg text-xs font-bold transition">Yopish</button>
@@ -223,10 +223,11 @@
             { title: "Qalbimdagi xavf-xatarlar", audio: "", genre: "Triller" }
         ];
 
-        let favorites = [];
+        let favorites = JSON.parse(localStorage.getItem('ovoziya_favs')) || [];
         let currentGenre = 'Barchasi';
         const booksContainer = document.getElementById('booksContainer');
         document.getElementById('totalBooksCount').textContent = books.length + " ta asar";
+        updateFavCount();
 
         function renderBooks(list) {
             booksContainer.innerHTML = "";
@@ -258,9 +259,6 @@
                         <button onclick="toggleFav('${book.title.replace(/'/g, "\\'")}')" class="w-7 h-7 rounded-lg bg-slate-700/50 text-slate-400 hover:text-rose-400 flex items-center justify-center transition">
                             <i class="${isFav ? 'fa-solid text-rose-500' : 'fa-regular'} fa-heart text-xs"></i>
                         </button>
-                        <button onclick="downloadAudio('${book.title.replace(/'/g, "\\'")}')" class="w-7 h-7 rounded-lg bg-slate-700/50 text-slate-300 hover:text-white flex items-center justify-center transition" title="Yuklab olish">
-                            <i class="fa-solid fa-download text-[10px]"></i>
-                        </button>
                         <button onclick="handleAction('${book.title.replace(/'/g, "\\'")}', '${book.audio}')" class="bg-green-500 hover:bg-green-600 text-slate-900 px-3 py-1 rounded-lg text-xs font-bold transition">
                             ${originalIndex === 1 ? 'Oʻqish' : 'Tinglash'}
                         </button>
@@ -281,35 +279,34 @@
                     btn.className = "genre-btn flex-shrink-0 bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-lg text-xs font-medium border border-slate-700 transition";
                 }
             });
+            applyFilters();
+        }
 
-            if(genre === 'Barchasi') {
-                renderBooks(books);
-            } else {
-                renderBooks(books.filter(b => b.genre === genre));
+        function filterBooks() {
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = books;
+            
+            if(currentGenre !== 'Barchasi') {
+                filtered = filtered.filter(b => b.genre === currentGenre);
             }
+            
+            if(query.trim() !== '') {
+                filtered = filtered.filter(b => b.title.toLowerCase().includes(query));
+            }
+            
+            renderBooks(filtered);
         }
 
         function handleAction(title, audioUrl) {
             if (title === "Muallif haqida qisqacha maʼlumot") {
                 document.getElementById('aboutModal').classList.remove('hidden');
-            } else {
-                playAudio(title, audioUrl);
             }
+            playAudio(title, audioUrl);
         }
 
         function playAudio(title, url) {
-            const playerCard = document.getElementById('audioPlayerCard');
-            const audioPlayer = document.getElementById('mainAudioPlayer');
-            const titleElem = document.getElementById('currentPlayingTitle');
-
-            titleElem.textContent = title;
-            playerCard.classList.remove('hidden');
-            playerCard.scrollIntoView({ behavior: 'smooth' });
-
-            if (url && url.trim() !== "") {
-                audioPlayer.src = url;
-                audioPlayer.play().catch(e => console.log("Avtomatik ijro to'sildi"));
-            } else {
-                audioPlayer.removeAttribute('src');
-                alert(`"${tit
-saodat-preview (3).wav
+            const playerCard = document.getElementById
